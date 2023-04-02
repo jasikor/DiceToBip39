@@ -71,8 +71,8 @@ namespace DiceToBip39
                 ? binary[^256..]
                 : binary;
 
-        private static double CalculateEntropy(string diceSeed) =>
-            BigInteger.Log(BigInteger.Pow(6, diceSeed.Length), 2.0);
+        public static int CalculateEntropy(string diceSeed) =>   
+            (int) BigInteger.Log(BigInteger.Pow(6, diceSeed.Length), 2.0);
 
         public static BigInteger DiceToBigInteger(string diceSeed)
         {
@@ -84,10 +84,10 @@ namespace DiceToBip39
                 });
         }
 
-        private static string ToBinaryString(BigInteger seed, double entropyInBits)
+        public static string ToBinaryString(BigInteger seed, int noOfBits)
         {
             var ret = new StringBuilder();
-            for (int i = (int) entropyInBits; i > 0; i--) {
+            for (int i = noOfBits; i > 0; i--) {
                 ret.Insert(0, (seed % 2).ToString());
                 seed /= 2;
             }

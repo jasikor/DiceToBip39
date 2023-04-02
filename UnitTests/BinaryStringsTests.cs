@@ -1,7 +1,5 @@
-﻿using FluentAssertions;
-using LanguageExt;
-using LanguageExt.Common;
-using LanguageExt.UnitTesting;
+﻿using System.Numerics;
+using FluentAssertions;
 using static DiceToBip39.ProgramExt;
 
 namespace UnitTests;
@@ -20,4 +18,23 @@ public class BinaryStringsTests
         var sut = BinaryStringToBytes(binary);
         sut.Should().BeEquivalentTo(expected);
     }
+    
+    
+    
+    
+    
+    [Theory]
+    [InlineData("255",8, "11111111")]
+    [InlineData("254",8, "11111110")]
+    [InlineData("0",8,   "00000000")]
+    [InlineData("8",8,   "00001000")]
+    [InlineData("8",4,   "1000")]
+    public void ToBinaryString_Works(string seed, int noOfBits, string expected)
+    {
+        var sut = ToBinaryString(BigInteger.Parse(seed), noOfBits);
+        sut.Should().BeEquivalentTo(expected);
+    }
+    
+    
+    
 }
