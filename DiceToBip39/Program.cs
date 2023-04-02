@@ -53,8 +53,8 @@ namespace DiceToBip39
 
         public static Mnemonic DiceToMnemonic(string diceSeed)
         {
-            var entropyBytes = DiceToBytes(diceSeed);
-            return new Mnemonic(Wordlist.English, entropyBytes);
+            var diceBytes = DiceToBytes(diceSeed);
+            return new Mnemonic(Wordlist.English, diceBytes);
         }
 
         private static byte[] DiceToBytes(string diceSeed)
