@@ -72,7 +72,7 @@ namespace DiceToBip39
                 : binary;
 
         public static int CalculateEntropy(string diceSeed) =>   
-            (int) BigInteger.Log(BigInteger.Pow(6, diceSeed.Length), 2.0);
+            (int) Math.Log(Math.Pow(6.0, diceSeed.Length), 2.0);
 
         public static BigInteger DiceToBigInteger(string diceSeed)
         {
