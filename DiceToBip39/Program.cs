@@ -58,15 +58,15 @@ namespace DiceToBip39
 
         private static byte[] DiceToBytes(string diceSeed)
         {
-            var binary = AdjustLength(DiceToBinaryString(diceSeed));
+            var binary = TrimTo256Bits(DiceToBinaryString(diceSeed));
             var entropyBytes = BinaryStringToBytes(binary);
             return entropyBytes;
         }
 
         private static string DiceToBinaryString(string diceSeed) =>
-            ToBinaryString(ParseDice(diceSeed), CalculateEntropy(diceSeed));
+            ToBinaryString(DiceToBigInteger(diceSeed), CalculateEntropy(diceSeed));
 
-        private static string AdjustLength(string binary) =>
+        private static string TrimTo256Bits(string binary) =>
             binary.Length > 256
                 ? binary[^256..]
                 : binary;
@@ -74,25 +74,20 @@ namespace DiceToBip39
         private static double CalculateEntropy(string diceSeed) =>
             BigInteger.Log(BigInteger.Pow(6, diceSeed.Length), 2.0);
 
-        public static BigInteger ParseDice(string diceSeed)
+        public static BigInteger DiceToBigInteger(string diceSeed)
         {
-            var ret = BigInteger.Zero;
-            char[] charArr = diceSeed.ToCharArray();
-            foreach (char ch in charArr)
-            {
-                int roll = (ch - '0') - 1;
-                ret *= 6;
-                ret += roll;
-            }
-
-            return ret;
+            return diceSeed
+                .Fold(BigInteger.Zero, (acc, ch) => {
+                    acc *= 6;
+                    acc += (ch - '0') - 1;
+                    return acc;
+                });
         }
 
         private static string ToBinaryString(BigInteger seed, double entropyInBits)
         {
             var ret = new StringBuilder();
-            for (int i = (int)entropyInBits; i > 0; i--)
-            {
+            for (int i = (int) entropyInBits; i > 0; i--) {
                 ret.Insert(0, (seed % 2).ToString());
                 seed /= 2;
             }
@@ -100,12 +95,11 @@ namespace DiceToBip39
             return ret.ToString();
         }
 
-        private static byte[] BinaryStringToBytes(string binary)
+        public static byte[] BinaryStringToBytes(string binary)
         {
             int numOfBytes = binary.Length / 8;
             byte[] bytes = new byte[numOfBytes];
-            for (int i = 0; i < numOfBytes; ++i)
-            {
+            for (int i = 0; i < numOfBytes; ++i) {
                 bytes[i] = Convert.ToByte(binary.Substring(8 * i, 8), 2);
             }
 
