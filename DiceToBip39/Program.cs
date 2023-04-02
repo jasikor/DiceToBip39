@@ -15,7 +15,7 @@ namespace DiceToBip39
         {
             var words = GetMnemonicWords(args);
             words
-                .Match(m => Console.WriteLine(string.Join(", ", m.Words)),
+                .Match(m => Console.WriteLine(string.Join(" ", m.Words)),
                     e => Console.WriteLine(e.ToFullString()));
             return words.IsSuccess ? 0 : -1;
         }
