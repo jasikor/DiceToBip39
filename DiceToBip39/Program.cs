@@ -15,7 +15,8 @@ namespace DiceToBip39
         {
             var words = GetMnemonicWords(args);
             words
-                .Match(m => Console.WriteLine(string.Join(" ", m.Words)),
+                .Map(w => string.Join(" ", w))
+                .Match(Console.Write,
                     e => Console.WriteLine(e.ToFullString()));
             return words.IsSuccess ? 0 : -1;
         }
@@ -71,7 +72,7 @@ namespace DiceToBip39
                 ? binary[^256..]
                 : binary;
 
-        public static int CalculateEntropy(string diceSeed) =>   
+        public static int CalculateEntropy(string diceSeed) =>
             (int) Math.Log(Math.Pow(6.0, diceSeed.Length), 2.0);
 
         public static BigInteger DiceToBigInteger(string diceSeed)
