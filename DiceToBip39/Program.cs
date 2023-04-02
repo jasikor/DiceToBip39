@@ -21,26 +21,26 @@ namespace DiceToBip39
         }
     }
 
-    static class ProgramExt
+    public static class ProgramExt
     {
-        private static Validation<Error, string> ValidateArgs(this string[] args) =>
-            SeedIsNotEmpty(args)
+        public static Validation<Error, string> ValidateArgs(this string[] args) =>
+            SeedParameterSupplied(args)
                 .Bind(SeedIsAtLeast100Long)
                 .Bind(SeedContainsDiceRolls);
 
 
-        private static Validation<Error, string> SeedIsNotEmpty(this string[] args) =>
+        public static Validation<Error, string> SeedParameterSupplied(this string[] args) =>
             args.Length == 1
                 ? Success<Error, string>(args[0])
                 : Fail<Error, string>(
                     "Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least 100 digits of [1..6]");
 
-        private static Validation<Error, string> SeedIsAtLeast100Long(this string seed) =>
+        public static Validation<Error, string> SeedIsAtLeast100Long(this string seed) =>
             seed.Length >= 100
                 ? Success<Error, string>(seed)
                 : Fail<Error, string>("diceSeed must be at least 100 characters long");
 
-        private static Validation<Error, string> SeedContainsDiceRolls(this string seed) =>
+        public static Validation<Error, string> SeedContainsDiceRolls(this string seed) =>
             seed.All(c => c >= '1' && c <= '6')
                 ? Success<Error, string>(seed)
                 : Fail<Error, string>("diceSeed has to be composed of [1..6] only");
