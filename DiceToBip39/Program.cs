@@ -50,7 +50,7 @@ namespace DiceToBip39
                 .ValidateArgs()
                 .Map(DiceToMnemonic);
 
-        private static Mnemonic DiceToMnemonic(string diceSeed)
+        public static Mnemonic DiceToMnemonic(string diceSeed)
         {
             var entropyBytes = DiceToBytes(diceSeed);
             return new Mnemonic(Wordlist.English, entropyBytes);
