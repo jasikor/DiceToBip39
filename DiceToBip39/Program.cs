@@ -24,9 +24,12 @@ namespace DiceToBip39
 
     public static class ProgramExt
     {
+        public const int BitsOfEntropy = 256;
+        public const int DiceDigitsEntropy = 100;
+
         public static Validation<Error, string> ValidateArgs(this string[] args) =>
             SeedParameterSupplied(args)
-                .Bind(SeedIsAtLeast100Long)
+                .Bind(SeedIsAtLeastDiceDigitsEntropyLong)
                 .Bind(SeedContainsDiceRolls);
 
 
@@ -34,15 +37,15 @@ namespace DiceToBip39
             args.Length == 1
                 ? Success<Error, string>(args[0])
                 : Fail<Error, string>(
-                    "Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least 100 digits of [1..6]");
+                    $"Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least {DiceDigitsEntropy} digits of [1..6]");
 
-        public static Validation<Error, string> SeedIsAtLeast100Long(this string seed) =>
-            seed.Length >= 100
+        public static Validation<Error, string> SeedIsAtLeastDiceDigitsEntropyLong(this string seed) =>
+            seed.Length >= DiceDigitsEntropy
                 ? Success<Error, string>(seed)
-                : Fail<Error, string>("diceSeed must be at least 100 characters long");
+                : Fail<Error, string>($"diceSeed must be at least {DiceDigitsEntropy} characters long");
 
         public static Validation<Error, string> SeedContainsDiceRolls(this string seed) =>
-            seed.All(c => c >= '1' && c <= '6')
+            seed.All(c => c is >= '1' and <= '6')
                 ? Success<Error, string>(seed)
                 : Fail<Error, string>("diceSeed has to be composed of [1..6] only");
 
@@ -53,42 +56,27 @@ namespace DiceToBip39
 
         public static Mnemonic DiceToMnemonic(string diceSeed)
         {
-            var diceBytes = DiceToBytes(diceSeed);
+            var diceBytes = DiceToBytes(diceSeed.Substring(0, DiceDigitsEntropy));
             return new Mnemonic(Wordlist.English, diceBytes);
         }
 
-        private static byte[] DiceToBytes(string diceSeed)
-        {
-            var binary = TrimTo256Bits(DiceToBinaryString(diceSeed));
-            var entropyBytes = BinaryStringToBytes(binary);
-            return entropyBytes;
-        }
+        private static byte[] DiceToBytes(string diceSeed) => BinaryStringToBytes(DiceToBinaryString(diceSeed));
 
         private static string DiceToBinaryString(string diceSeed) =>
-            ToBinaryString(DiceToBigInteger(diceSeed), CalculateEntropy(diceSeed));
+            ToBinaryString(DiceToBigInteger(diceSeed));
 
-        private static string TrimTo256Bits(string binary) =>
-            binary.Length > 256
-                ? binary[^256..]
-                : binary;
-
-        public static int CalculateEntropy(string diceSeed) =>
-            (int) Math.Log(Math.Pow(6.0, diceSeed.Length), 2.0);
-
-        public static BigInteger DiceToBigInteger(string diceSeed)
-        {
-            return diceSeed
+        public static BigInteger DiceToBigInteger(string diceSeed) =>
+            diceSeed
                 .Fold(BigInteger.Zero, (acc, ch) => {
                     acc *= 6;
                     acc += (ch - '0') - 1;
                     return acc;
                 });
-        }
 
-        public static string ToBinaryString(BigInteger seed, int noOfBits)
+        public static string ToBinaryString(BigInteger seed)
         {
             var ret = new StringBuilder();
-            for (int i = noOfBits; i > 0; i--) {
+            for (int i = BitsOfEntropy; i > 0; i--) {
                 ret.Insert(0, (seed % 2).ToString());
                 seed /= 2;
             }

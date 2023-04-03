@@ -35,7 +35,7 @@ namespace UnitTests
             "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901")]
         public void SeedIsAtLeast100Long_CorrectlyValidates_LongStrings(string input)
         {
-            var sut = input.SeedIsAtLeast100Long();
+            var sut = input.SeedIsAtLeastDiceDigitsEntropyLong();
             sut.ShouldBeSuccess();
         }
 

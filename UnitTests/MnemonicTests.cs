@@ -11,7 +11,10 @@ public class MnemonicTests
     
     [Theory]
     [InlineData("123456123456123456123456123456123456123456123456123456123456123456123456123456123456123456123456123456123456123456", 
-        "forget pretty arrange tail manage join unfold call blast harsh witness toy weapon gap uncover dry almost plug ahead recipe grant cook dilemma cream")]
+        "defy trip fatal jaguar mean rack rifle survey satisfy drift twist champion steel wife state furnace night consider glove olympic oblige donor novel left")]
+
+    [InlineData("1234561234561234561234561234561234561234561234561234561234561234561234561234561234561234561234561234561234561234", 
+        "defy trip fatal jaguar mean rack rifle survey satisfy drift twist champion steel wife state furnace night consider glove olympic oblige donor novel left")]
     public void DiceToMnemonic_Works(string dice, string expected)
     {
         var sut = DiceToMnemonic(dice);
