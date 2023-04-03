@@ -24,8 +24,8 @@ namespace DiceToBip39
 
     public static class ProgramExt
     {
-        public const int BitsOfEntropy = 256;
-        public const int DiceDigitsEntropy = 100;
+        private const int BitsOfEntropy = 256;
+        private const int DiceDigitsEntropy = 100;
 
         public static Validation<Error, string> ValidateArgs(this string[] args) =>
             SeedParameterSupplied(args)
