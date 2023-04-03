@@ -1,7 +1,4 @@
 ﻿using FluentAssertions;
-using LanguageExt;
-using LanguageExt.Common;
-using LanguageExt.UnitTesting;
 using static DiceToBip39.ProgramExt;
 
 namespace UnitTests;
