@@ -10,19 +10,13 @@ namespace UnitTests
     {
         [Theory]
         [InlineData(new object[] {new string[] {"123456"}})]
-        public void SeedParameterSupplied_Validates_SuppliedParameter(string[] input)
-        {
-            Validation<Error, string> sut = input.SeedParameterSupplied();
-            sut.ShouldBeSuccess();
-        }
+        public void SeedParameterSupplied_Validates_SuppliedParameter(string[] input) =>
+            input.SeedParameterSupplied().ShouldBeSuccess();
 
         [Theory]
         [InlineData(new object[] {new string[] { }})]
-        public void SeedParameterSupplied_Rejects_NoParameters(string[] input)
-        {
-            Validation<Error, string> sut = input.SeedParameterSupplied();
-            sut.ShouldBeFail();
-        }
+        public void SeedParameterSupplied_Rejects_NoParameters(string[] input) =>
+            input.SeedParameterSupplied().ShouldBeFail();
 
         [Theory]
         [InlineData(new object[] {
@@ -35,18 +29,12 @@ namespace UnitTests
             }
         })]
         [InlineData(new object[] {new string[] {""}})]
-        public void ValidateArgs_Succeeds_OnCorrectParameters(string[] input)
-        {
-            Validation<Error, string> sut = input.ValidateArgs();
-            sut.ShouldBeSuccess();
-        }
+        public void ValidateArgs_Succeeds_OnCorrectParameters(string[] input) => 
+            input.ValidateArgs().ShouldBeSuccess();
 
         [Theory]
         [InlineData(new object[] {new string[] { }})]
-        public void ValidateArgs_Fails_OnIncorrectParameters(string[] input)
-        {
-            Validation<Error, string> sut = input.ValidateArgs();
-            sut.ShouldBeFail();
-        }
+        public void ValidateArgs_Fails_OnIncorrectParameters(string[] input) => 
+            input.ValidateArgs().ShouldBeFail();
     }
 }
