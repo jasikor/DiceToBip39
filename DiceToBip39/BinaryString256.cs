@@ -16,7 +16,7 @@ public class BinaryString256
     public const int NoOfBits = 256;
 
     public static Validation<Error, BinaryString256> Create(string s) =>
-        ConstrainedStringFactory.Create(s, NoOfBits, '0', '1')
+        ConstrainedStringValidator.Validate(s, NoOfBits, '0', '1')
             .Map(s => new BinaryString256(s.Substring(0, NoOfBits)));
 
 

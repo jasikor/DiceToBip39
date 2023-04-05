@@ -4,9 +4,9 @@ using static LanguageExt.Prelude;
 
 namespace DiceToBip39;
 
-public static class ConstrainedStringFactory
+public static class ConstrainedStringValidator
 {
-    public static Validation<Error, string> Create(string s, int length, char first, char last) =>
+    public static Validation<Error, string> Validate(string s, int length, char first, char last) =>
         s
             .AtLeastLong(length)
             .Bind(s => s.ContainsOnly(first, last));

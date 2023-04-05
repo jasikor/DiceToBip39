@@ -14,7 +14,7 @@ public class DiceString
 
     private const int NoOfDigits = 100;
     public static Validation<Error, DiceString> Create(string s) =>
-        ConstrainedStringFactory.Create(s, NoOfDigits, '1', '6')
+        ConstrainedStringValidator.Validate(s, NoOfDigits, '1', '6')
             .Map(s => new DiceString(s.Substring(0, NoOfDigits)));
 
     public BigInteger DiceToBigInteger() =>
