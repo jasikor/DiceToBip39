@@ -13,7 +13,10 @@ namespace DiceToBip39
     {
         static int Main(string[] args)
         {
-            var words = GetMnemonicWords(args);
+            var words =
+                args
+                    .ValidateArgs()
+                    .Bind(s => s.GetMnemonicWords());
             words
                 .Map(w => string.Join(" ", w))
                 .Match(Console.Write,
@@ -31,10 +34,8 @@ namespace DiceToBip39
                     $"Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least 100 digits of [1..6]");
 
 
-        public static Validation<Error, Mnemonic> GetMnemonicWords(string[] args) =>
-            args
-                .ValidateArgs()
-                .Bind(s => DiceString.Create(s))
+        public static Validation<Error, Mnemonic> GetMnemonicWords(this string dice) =>
+            DiceString.Create(dice)
                 .Map(DiceToMnemonic);
 
         public static Mnemonic DiceToMnemonic(DiceString diceSeed)
@@ -43,14 +44,10 @@ namespace DiceToBip39
             return new Mnemonic(Wordlist.English, diceBytes);
         }
 
-        private static byte[] DiceToBytes(DiceString diceSeed) => 
+        private static byte[] DiceToBytes(DiceString diceSeed) =>
             DiceToBinaryString(diceSeed).ToByteArray();
 
         private static BinaryString256 DiceToBinaryString(DiceString diceSeed) =>
             BinaryString256.ToBinaryString256(diceSeed.DiceToBigInteger());
-
-
-        
-        
     }
 }
