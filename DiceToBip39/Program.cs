@@ -28,9 +28,7 @@ namespace DiceToBip39
         private const int DiceDigitsEntropy = 100;
 
         public static Validation<Error, string> ValidateArgs(this string[] args) =>
-            SeedParameterSupplied(args)
-                .Bind(SeedIsAtLeastDiceDigitsEntropyLong)
-                .Bind(SeedContainsDiceRolls);
+            SeedParameterSupplied(args);
 
 
         public static Validation<Error, string> SeedParameterSupplied(this string[] args) =>
@@ -39,39 +37,24 @@ namespace DiceToBip39
                 : Fail<Error, string>(
                     $"Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least {DiceDigitsEntropy} digits of [1..6]");
 
-        public static Validation<Error, string> SeedIsAtLeastDiceDigitsEntropyLong(this string seed) =>
-            seed.Length >= DiceDigitsEntropy
-                ? Success<Error, string>(seed)
-                : Fail<Error, string>($"diceSeed must be at least {DiceDigitsEntropy} characters long");
-
-        public static Validation<Error, string> SeedContainsDiceRolls(this string seed) =>
-            seed.All(c => c is >= '1' and <= '6')
-                ? Success<Error, string>(seed)
-                : Fail<Error, string>("diceSeed has to be composed of [1..6] only");
 
         public static Validation<Error, Mnemonic> GetMnemonicWords(string[] args) =>
             args
                 .ValidateArgs()
+                .Bind(s => DiceString.Create(s))
                 .Map(DiceToMnemonic);
 
-        public static Mnemonic DiceToMnemonic(string diceSeed)
+        public static Mnemonic DiceToMnemonic(DiceString diceSeed)
         {
-            var diceBytes = DiceToBytes(diceSeed.Substring(0, DiceDigitsEntropy));
+            var diceBytes = DiceToBytes(diceSeed);
             return new Mnemonic(Wordlist.English, diceBytes);
         }
 
-        private static byte[] DiceToBytes(string diceSeed) => BinaryStringToBytes(DiceToBinaryString(diceSeed));
+        private static byte[] DiceToBytes(DiceString diceSeed) => BinaryStringToBytes(DiceToBinaryString(diceSeed));
 
-        private static string DiceToBinaryString(string diceSeed) =>
-            ToBinaryString(DiceToBigInteger(diceSeed));
+        private static string DiceToBinaryString(DiceString diceSeed) =>
+            ToBinaryString(diceSeed.DiceToBigInteger());
 
-        public static BigInteger DiceToBigInteger(string diceSeed) =>
-            diceSeed
-                .Fold(BigInteger.Zero, (acc, ch) => {
-                    acc *= 6;
-                    acc += (ch - '0') - 1;
-                    return acc;
-                });
 
         public static string ToBinaryString(BigInteger seed)
         {
