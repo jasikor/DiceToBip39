@@ -28,10 +28,6 @@ namespace DiceToBip39
         private const int DiceDigitsEntropy = 100;
 
         public static Validation<Error, string> ValidateArgs(this string[] args) =>
-            SeedParameterSupplied(args);
-
-
-        public static Validation<Error, string> SeedParameterSupplied(this string[] args) =>
             args.Length == 1
                 ? Success<Error, string>(args[0])
                 : Fail<Error, string>(
