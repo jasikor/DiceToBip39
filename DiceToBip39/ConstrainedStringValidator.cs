@@ -20,7 +20,7 @@ public static class StringFactoryExt
             : Fail<Error, string>(e);
 
     public static Validation<Error, string> AtLeastLong(this string s, int length) =>
-        s.Validate((s) => s.Length >= length,
+        s.Validate(s => s.Length >= length,
             $"String must be at least {length} characters long");
 
     public static Validation<Error, string> ContainsOnly(this string s, char first, char last) =>
