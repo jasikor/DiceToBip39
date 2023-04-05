@@ -46,7 +46,8 @@ namespace DiceToBip39
             return new Mnemonic(Wordlist.English, diceBytes);
         }
 
-        private static byte[] DiceToBytes(DiceString diceSeed) => BinaryStringToBytes(DiceToBinaryString(diceSeed));
+        private static byte[] DiceToBytes(DiceString diceSeed) => 
+            BinaryStringToBytes(DiceToBinaryString(diceSeed));
 
         private static string DiceToBinaryString(DiceString diceSeed) =>
             ToBinaryString(diceSeed.DiceToBigInteger());
