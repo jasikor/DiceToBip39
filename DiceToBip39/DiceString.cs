@@ -33,7 +33,7 @@ public class DiceString
 
 }
 
-static class Validations
+static internal class DiceValidations
 {
     public static Validation<Error, string> AtLeast100Long(this string s) =>
         s.Length >= 100

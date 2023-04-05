@@ -24,14 +24,11 @@ namespace DiceToBip39
 
     public static class ProgramExt
     {
-        private const int BitsOfEntropy = 256;
-        private const int DiceDigitsEntropy = 100;
-
         public static Validation<Error, string> ValidateArgs(this string[] args) =>
             args.Length == 1
                 ? Success<Error, string>(args[0])
                 : Fail<Error, string>(
-                    $"Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least {DiceDigitsEntropy} digits of [1..6]");
+                    $"Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least 100 digits of [1..6]");
 
 
         public static Validation<Error, Mnemonic> GetMnemonicWords(string[] args) =>
@@ -47,32 +44,13 @@ namespace DiceToBip39
         }
 
         private static byte[] DiceToBytes(DiceString diceSeed) => 
-            BinaryStringToBytes(DiceToBinaryString(diceSeed));
+            DiceToBinaryString(diceSeed).ToByteArray();
 
-        private static string DiceToBinaryString(DiceString diceSeed) =>
-            ToBinaryString(diceSeed.DiceToBigInteger());
+        private static BinaryString256 DiceToBinaryString(DiceString diceSeed) =>
+            BinaryString256.ToBinaryString256(diceSeed.DiceToBigInteger());
 
 
-        public static string ToBinaryString(BigInteger seed)
-        {
-            var ret = new StringBuilder();
-            for (int i = BitsOfEntropy; i > 0; i--) {
-                ret.Insert(0, (seed % 2).ToString());
-                seed /= 2;
-            }
-
-            return ret.ToString();
-        }
-
-        public static byte[] BinaryStringToBytes(string binary)
-        {
-            int numOfBytes = binary.Length / 8;
-            byte[] bytes = new byte[numOfBytes];
-            for (int i = 0; i < numOfBytes; ++i) {
-                bytes[i] = Convert.ToByte(binary.Substring(8 * i, 8), 2);
-            }
-
-            return bytes;
-        }
+        
+        
     }
 }

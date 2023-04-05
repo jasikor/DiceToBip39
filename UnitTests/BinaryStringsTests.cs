@@ -1,31 +1,59 @@
 ﻿using System.Numerics;
+using DiceToBip39;
 using FluentAssertions;
+using LanguageExt;
+using LanguageExt.UnitTesting;
 using static DiceToBip39.ProgramExt;
 
 namespace UnitTests;
 
 public class BinaryStringsTests
 {
+    private const string Zeros256Minus16 =
+        "0000000000000000000000000000000000000000000000000000000000000000" +
+        "0000000000000000000000000000000000000000000000000000000000000000" +
+        "0000000000000000000000000000000000000000000000000000000000000000" +
+        "000000000000000000000000000000000000000000000000";
+
+    private const string Zeros256Minus8 = Zeros256Minus16 + "00000000";
+
     [Theory]
-    [InlineData("00000000", new byte[] {0})]
-    [InlineData("00000001", new byte[] {1})]
-    [InlineData("00000010", new byte[] {2})]
-    [InlineData("0000001000000000", new byte[] {2, 0})]
-    [InlineData("0000001011111111", new byte[] {2, 255})]
-    [InlineData("00000010111111110", new byte[] {2, 255})]
+    [InlineData(Zeros256Minus8 + "00000000",
+        new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
+    [InlineData(Zeros256Minus8 + "00000001",
+        new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1})]
+    [InlineData(Zeros256Minus8 + "00000010",
+        new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2})]
+    [InlineData(Zeros256Minus16 + "0000001000000000",
+        new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0})]
+    [InlineData(Zeros256Minus16 + "0000001011111111",
+        new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 255})]
+    [InlineData(Zeros256Minus16 + "00000010111111110",
+        new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 255})]
     public void BinaryStringToBytes_Works(string binary, byte[] expected) =>
-        BinaryStringToBytes(binary).Should().BeEquivalentTo(expected);
+        BinaryString256.Create(binary)
+            .Map(bs => bs.ToByteArray())
+            .Map(bytes => bytes.Should().BeEquivalentTo(expected))
+            .IfFail(e => Assert.Fail("should never get here. If id does, InlineData is incorrect"));
 
 
     [Theory]
-    [InlineData("255",
-        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011111111")]
-    [InlineData("254",
-        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011111110")]
-    [InlineData("0",
-        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")]
-    [InlineData("8",
-        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000")]
-    public void ToBinaryString_Works(string seed, string expected) => 
-        ToBinaryString(BigInteger.Parse(seed)).Should().BeEquivalentTo(expected);
+    [InlineData("255", Zeros256Minus8 + "11111111")]
+    [InlineData("254", Zeros256Minus8 + "11111110")]
+    [InlineData("0", Zeros256Minus8 + "00000000")]
+    [InlineData("8", Zeros256Minus8 + "00001000")]
+    public void ToBinaryString_Works(string seed, string expected) =>
+        BinaryString256.ToBinaryString256(BigInteger.Parse(seed)).ToString().Should().Be(expected);
+
+    [Theory]
+    [InlineData(Zeros256Minus8 + "11111111")]
+    [InlineData(Zeros256Minus8 + "11111110")]
+    [InlineData(Zeros256Minus8 + "00000000")]
+    public void BinaryString_Create_Succeeds(string input) =>
+        BinaryString256.Create(input).ShouldBeSuccess();
+
+    [Theory]
+    [InlineData("200001111000")]
+    public void BinaryString_Create_Fails_OnIncorrectInput(string input) =>
+        BinaryString256.Create(input).ShouldBeFail();
 }
