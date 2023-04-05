@@ -11,17 +11,14 @@ public class BinaryString256
 {
     private readonly string _value;
 
-    private BinaryString256(string value)
-    {
-        _value = value;
-    }
-
-    public static Validation<Error, BinaryString256> Create(string s) =>
-        s.Contains1Or0Only()
-            .Bind(s => s.AtLeast256Long())
-            .Map(s => new BinaryString256(s));
+    private BinaryString256(string value) => _value = value;
 
     public const int NoOfBits = 256;
+
+    public static Validation<Error, BinaryString256> Create(string s) =>
+        ConstrainedStringFactory.Create(s, NoOfBits, '0', '1')
+            .Map(s => new BinaryString256(s.Substring(0, NoOfBits)));
+
 
     public static BinaryString256 ToBinaryString256(BigInteger seed)
     {
@@ -46,18 +43,3 @@ public class BinaryString256
 
     public override string ToString() => _value;
 }
-
-static internal class BinaryString256Validations
-{
-    public static Validation<Error, string> Contains1Or0Only(this string s) =>
-        s.All(c => c == '1' || c == '0')
-            ? Success<Error, string>(s)
-            : Fail<Error, string>("DiceString has to be composed of 1s and 0s only");
-
-    public static Validation<Error, string> AtLeast256Long(this string s) =>
-        s.Length >= BinaryString256.NoOfBits
-            ? Success<Error, string>(s)
-            : Fail<Error, string>($"DiceString must be at least 100 characters long");
-}
-
-static class BinaryStrin256Ext { }
