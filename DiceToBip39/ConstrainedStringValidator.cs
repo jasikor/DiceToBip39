@@ -8,7 +8,8 @@ public static class ConstrainedStringValidator
 {
     public static Validation<Error, string> Validate(string s, int length, char first, char last) =>
         s
-            .AtLeastLong(length)
+            .IsNotNull()
+            .Bind(s => s.AtLeastLong(length))
             .Bind(s => s.ContainsOnly(first, last));
 }
 
@@ -27,4 +28,7 @@ public static class StringFactoryExt
         s.Validate(s =>
                 s.All(c => c >= first && c <= last),
             $"String has to be composed of [{first}..{last}] only");
+
+    public static Validation<Error, string> IsNotNull(this string s) =>
+        s.Validate(s => !s.IsNull(), new ArgumentNullException());
 }

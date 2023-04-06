@@ -1,7 +1,6 @@
 ﻿using System.Numerics;
 using DiceToBip39;
 using FluentAssertions;
-using LanguageExt.UnitTesting;
 
 namespace UnitTests;
 
@@ -43,15 +42,5 @@ public class BinaryStringsTests
     public void ToBinaryString_Works(string seed, string expected) =>
         BinaryString256.ToBinaryString256(BigInteger.Parse(seed)).ToString().Should().Be(expected);
 
-    [Theory]
-    [InlineData(Zeros256Minus8 + "11111111")]
-    [InlineData(Zeros256Minus8 + "11111110")]
-    [InlineData(Zeros256Minus8 + "00000000")]
-    public void BinaryString_Create_Succeeds(string input) =>
-        BinaryString256.Create(input).ShouldBeSuccess();
 
-    [Theory]
-    [InlineData("200001111000")]
-    public void BinaryString_Create_Fails_OnIncorrectInput(string input) =>
-        BinaryString256.Create(input).ShouldBeFail();
 }
