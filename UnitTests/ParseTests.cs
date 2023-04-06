@@ -1,6 +1,5 @@
 ﻿using DiceToBip39;
 using FluentAssertions;
-using static DiceToBip39.ProgramExt;
 
 namespace UnitTests;
 

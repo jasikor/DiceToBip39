@@ -1,8 +1,6 @@
 ﻿using LanguageExt;
 using LanguageExt.Common;
 using static LanguageExt.Prelude;
-using System.Numerics;
-using System.Text;
 using NBitcoin;
 using static DiceToBip39.BinaryString256;
 using static DiceToBip39.ProgramExt;

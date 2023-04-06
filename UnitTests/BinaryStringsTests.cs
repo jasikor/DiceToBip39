@@ -1,9 +1,7 @@
 ﻿using System.Numerics;
 using DiceToBip39;
 using FluentAssertions;
-using LanguageExt;
 using LanguageExt.UnitTesting;
-using static DiceToBip39.ProgramExt;
 
 namespace UnitTests;
 
