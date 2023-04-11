@@ -17,7 +17,7 @@ public class MnemonicTests
         "defy trip fatal jaguar mean rack rifle survey satisfy drift twist champion steel wife state furnace night consider glove olympic oblige donor novel left")]
     public void DiceToMnemonic_Works(string dice, string expected) =>
         DiceString.Create(dice)
-            .Bind(ToMnemonic)
+            .Map(ToMnemonic)
             .Map(m => string.Join(" ", m.Words))
             .ShouldBeSuccess(s => s.Should().Be(expected));
 }

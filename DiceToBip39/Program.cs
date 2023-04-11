@@ -18,7 +18,7 @@ namespace DiceToBip39
                 args
                     .ValidateArgs()
                     .Bind(DiceString.Create)
-                    .Bind(ToMnemonic);
+                    .Map(ToMnemonic);
             mnemonic
                 .Map(m => string.Join(" ", m))
                 .Match(Console.Write,
@@ -36,7 +36,7 @@ namespace DiceToBip39
                     $"Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least 100 digits of [1..6]");
 
 
-        public static Validation<Error, Mnemonic> ToMnemonic(DiceString diceSeed)
+        public static Mnemonic ToMnemonic(DiceString diceSeed)
         {
             var bi = diceSeed.ToBigInteger();
             var by = BinaryString256.Create(bi).ToByteArray();
