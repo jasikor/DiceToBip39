@@ -1,5 +1,6 @@
 ﻿using DiceToBip39;
 using FluentAssertions;
+using LanguageExt.UnitTesting;
 
 
 namespace UnitTests;
@@ -13,8 +14,7 @@ public class DiceStringTests
     [InlineData("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113", "2")]
     public void DiceToBigInteger_Works(string dice, string expected) =>
         DiceString.Create(dice)
-            .Map(d => d.DiceToBigInteger())
+            .Map(d => d.ToBigInteger())
             .Map(bi => bi.ToString())
-            .Map(s => s.Should().Be(expected))
-            .IfFail(e => Assert.Fail("should never get here. If id does, InlineData is incorrect"));
+            .ShouldBeSuccess(s => s.Should().Be(expected));
 }

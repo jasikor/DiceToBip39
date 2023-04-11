@@ -12,14 +12,9 @@ public class BinaryString256
 
     private BinaryString256(string value) => _value = value;
 
-    public const int NoOfBits = 256;
+    private const int NoOfBits = 256;
 
-    public static Validation<Error, BinaryString256> Create(string s) =>
-        ConstrainedStringValidator.Validate(s, NoOfBits, '0', '1')
-            .Map(s => new BinaryString256(s.Substring(0, NoOfBits)));
-
-
-    public static BinaryString256 ToBinaryString256(BigInteger seed)
+    public static BinaryString256 Create(BigInteger seed)
     {
         var ret = new StringBuilder();
         for (int i = NoOfBits; i > 0; i--) {

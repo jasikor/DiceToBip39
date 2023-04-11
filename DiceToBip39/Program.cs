@@ -1,4 +1,6 @@
-﻿using LanguageExt;
+﻿using System.Diagnostics;
+using System.Numerics;
+using LanguageExt;
 using LanguageExt.Common;
 using static LanguageExt.Prelude;
 using NBitcoin;
@@ -16,7 +18,7 @@ namespace DiceToBip39
                 args
                     .ValidateArgs()
                     .Bind(DiceString.Create)
-                    .Map(ToMnemonic);
+                    .Bind(ToMnemonic);
             mnemonic
                 .Map(m => string.Join(" ", m))
                 .Match(Console.Write,
@@ -34,16 +36,11 @@ namespace DiceToBip39
                     $"Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least 100 digits of [1..6]");
 
 
-        public static Mnemonic ToMnemonic(DiceString diceSeed)
+        public static Validation<Error, Mnemonic> ToMnemonic(DiceString diceSeed)
         {
-            var diceBytes = ToBytes(diceSeed);
-            return new Mnemonic(Wordlist.English, diceBytes);
+            var bi = diceSeed.ToBigInteger();
+            var by = BinaryString256.Create(bi).ToByteArray();
+            return new Mnemonic(Wordlist.English, by);
         }
-
-        private static byte[] ToBytes(DiceString diceSeed) =>
-            ToBinary(diceSeed).ToByteArray();
-
-        private static BinaryString256 ToBinary(DiceString diceSeed) =>
-            ToBinaryString256(diceSeed.DiceToBigInteger());
     }
 }

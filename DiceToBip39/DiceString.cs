@@ -12,15 +12,17 @@ public class DiceString
     private DiceString(string value) => _value = value;
 
     private const int NoOfDigits = 100;
+
     public static Validation<Error, DiceString> Create(string s) =>
         ConstrainedStringValidator.Validate(s, NoOfDigits, '1', '6')
             .Map(s => new DiceString(s.Substring(0, NoOfDigits)));
 
-    public BigInteger DiceToBigInteger() =>
+    public BigInteger ToBigInteger() =>
         _value
             .Fold(BigInteger.Zero, (acc, ch) => {
                 acc *= 6;
-                acc += (ch - '0') - 1;
+                acc += (uint)(ch - '0') - 1;
                 return acc;
             });
+
 }

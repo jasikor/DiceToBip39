@@ -1,6 +1,7 @@
 ﻿using DiceToBip39;
 using FluentAssertions;
 using LanguageExt;
+using LanguageExt.UnitTesting;
 using static DiceToBip39.ProgramExt;
 
 namespace UnitTests;
@@ -16,8 +17,7 @@ public class MnemonicTests
         "defy trip fatal jaguar mean rack rifle survey satisfy drift twist champion steel wife state furnace night consider glove olympic oblige donor novel left")]
     public void DiceToMnemonic_Works(string dice, string expected) =>
         DiceString.Create(dice)
-            .Map(d => ToMnemonic(d))
+            .Bind(ToMnemonic)
             .Map(m => string.Join(" ", m.Words))
-            .Map(s => s.Should().Be(expected))
-            .IfFail(e => Assert.Fail("should never get here. If id does, InlineData is incorrect"));
+            .ShouldBeSuccess(s => s.Should().Be(expected));
 }
