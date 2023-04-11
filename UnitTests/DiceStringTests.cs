@@ -1,4 +1,5 @@
-﻿using DiceToBip39;
+﻿using System.Numerics;
+using DiceToBip39;
 using FluentAssertions;
 using LanguageExt.UnitTesting;
 
@@ -10,11 +11,11 @@ public class DiceStringTests
    
     
     [Theory]
-    [InlineData("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111123456", "1865")]
-    [InlineData("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113", "2")]
-    public void DiceToBigInteger_Works(string dice, string expected) =>
+    [InlineData("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111123456", 1865)]
+    [InlineData("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113", 2)]
+    [InlineData("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111113666666", 2)]
+    public void DiceToBigInteger_Works(string dice, BigInteger expected) =>
         DiceString.Create(dice)
             .Map(d => d.ToBigInteger())
-            .Map(bi => bi.ToString())
-            .ShouldBeSuccess(s => s.Should().Be(expected));
+            .ShouldBeSuccess(bi => bi.Should().Be(expected));
 }

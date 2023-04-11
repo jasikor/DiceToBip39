@@ -30,13 +30,12 @@ public class BinaryStringsTests
             .Should().BeEquivalentTo(expected);
 
     [Theory]
-    [InlineData("255", Zeros256Minus8 + "11111111")]
-    [InlineData("254", Zeros256Minus8 + "11111110")]
-    [InlineData("0", Zeros256Minus8 + "00000000")]
-    [InlineData("8", Zeros256Minus8 + "00001000")]
-    public void ToBinaryString_Works(string seed, string expected)
+    [InlineData(255, Zeros256Minus8 + "11111111")]
+    [InlineData(254, Zeros256Minus8 + "11111110")]
+    [InlineData(0, Zeros256Minus8 + "00000000")]
+    [InlineData(8, Zeros256Minus8 + "00001000")]
+    public void ToBinaryString_Works(BigInteger seed, string expected)
     {
-        var ui = BigInteger.Parse(seed);
-        BinaryString256.Create(ui).ToString().Should().Be(expected);
+        BinaryString256.Create(seed).ToString().Should().Be(expected);
     }
 }
