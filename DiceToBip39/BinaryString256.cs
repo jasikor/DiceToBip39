@@ -1,7 +1,5 @@
 ﻿using System.Numerics;
 using System.Text;
-using LanguageExt;
-using LanguageExt.Common;
 
 
 namespace DiceToBip39;
