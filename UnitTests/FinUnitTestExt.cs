@@ -1,0 +1,24 @@
+﻿using LanguageExt;
+using LanguageExt.Common;
+
+namespace UnitTests;
+
+public static class FinUnitTestExt
+{
+    public static void ShouldBeSuccess<TSuccess>(this Fin<TSuccess> @this,
+        Action<TSuccess> successValidation = null)
+        => @this.Match(successValidation ?? Noop, ThrowIfFail);
+
+    public static void ShouldBeFail<TSuccess>(this Fin<TSuccess> @this,
+        Action<Error> failValidation = null)
+        => @this.Match(ThrowIfSuccess, failValidation ?? Noop);
+
+
+    internal static void Noop<T>(T _) { }
+
+    internal static void ThrowIfFail<T>(T _)
+        => throw new Exception("Expected Success, got Fail instead.");
+
+    internal static void ThrowIfSuccess<T>(T _)
+        => throw new Exception("Expected Fail, got Success instead.");
+}

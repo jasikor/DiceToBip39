@@ -13,7 +13,7 @@ public class DiceString
 
     private const int NoOfDigits = 100;
 
-    public static Validation<Error, DiceString> Create(string s) =>
+    public static Fin<DiceString> Create(string s) =>
         ConstrainedStringValidator.Validate(s, NoOfDigits, '1', '6')
             .Map(st => new DiceString(st.Substring(0, NoOfDigits)));
 

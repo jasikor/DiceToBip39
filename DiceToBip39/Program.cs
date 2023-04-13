@@ -20,17 +20,17 @@ namespace DiceToBip39
             mnemonic
                 .Map(m => string.Join(" ", m))
                 .Match(Console.Write,
-                    e => Console.WriteLine(e.ToFullString()));
-            return mnemonic.IsSuccess ? 0 : -1;
+                    e => Console.WriteLine(e.ToString()));
+            return mnemonic.IsSucc ? 0 : -1;
         }
     }
 
     public static class ProgramExt
     {
-        public static Validation<Error, string> ValidateArgs(this string[] args) =>
+        public static Fin<string> ValidateArgs(this string[] args) =>
             args.Length == 1
-                ? Success<Error, string>(args[0])
-                : Fail<Error, string>(
+                ? FinSucc(args[0])
+                : FinFail<string>(
                     $"Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least 100 digits of [1..6]");
 
 
