@@ -6,10 +6,10 @@ namespace DiceToBip39;
 
 public static class ConstrainedStringValidator
 {
-    public static Fin<string> Validate(string s, int length, char first, char last) =>
+    public static Fin<string> Validate(string s, int minLength, char first, char last) =>
         s
             .IsNotNull()
-            .Bind(s => s.AtLeastLong(length))
+            .Bind(s => s.AtLeastLong(minLength))
             .Bind(s => s.ContainsOnly(first, last));
 }
 

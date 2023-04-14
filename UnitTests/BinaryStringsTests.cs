@@ -26,7 +26,7 @@ public class BinaryStringsTests
     [InlineData(0b1111_1111_1111,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 255})]
     public void BinaryStringToBytes_Works(BigInteger binary, byte[] expected) =>
-        BinaryString256.Create(binary).ToByteArray()
+        BinaryString.Create(binary).ToByteArray()
             .Should().BeEquivalentTo(expected);
 
     [Theory]
@@ -36,6 +36,6 @@ public class BinaryStringsTests
     [InlineData(8, Zeros256Minus8 + "00001000")]
     public void ToBinaryString_Works(BigInteger seed, string expected)
     {
-        BinaryString256.Create(seed).ToString().Should().Be(expected);
+        BinaryString.Create(seed).ToString().Should().Be(expected);
     }
 }

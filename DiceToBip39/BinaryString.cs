@@ -4,15 +4,15 @@ using System.Text;
 
 namespace DiceToBip39;
 
-public class BinaryString256
+public class BinaryString
 {
     private readonly string _value;
 
-    private BinaryString256(string value) => _value = value;
+    private BinaryString(string value) => _value = value;
 
     private const int NoOfBits = 256;
 
-    public static BinaryString256 Create(BigInteger seed)
+    public static BinaryString Create(BigInteger seed)
     {
         var ret = new StringBuilder();
         for (int i = NoOfBits; i > 0; i--) {
@@ -20,8 +20,10 @@ public class BinaryString256
             seed /= 2;
         }
 
-        return new BinaryString256(ret.ToString());
+        return new BinaryString(ret.ToString());
     }
+
+    static readonly int[] _goodEntropies = new[] {128, 160, 192, 224, 256};
 
     public byte[] ToByteArray()
     {
