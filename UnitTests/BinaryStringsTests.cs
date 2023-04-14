@@ -15,18 +15,27 @@ public class BinaryStringsTests
     private const string Zeros256Minus8 = Zeros256Minus16 + "00000000";
 
     [Theory]
-    [InlineData(0,
+    [InlineData(0, 256,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
-    [InlineData(1,
+    [InlineData(1, 256,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1})]
-    [InlineData(2,
+    [InlineData(2, 256,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2})]
-    [InlineData(512,
+    [InlineData(512, 256,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0})]
-    [InlineData(0b1111_1111_1111,
+    [InlineData(0b1111_1111_1111,  256,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 255})]
-    public void BinaryStringToBytes_Works(BigInteger binary, byte[] expected) =>
-        BinaryString.Create(binary).ToByteArray()
+    [InlineData(0, 224,
+        new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
+    [InlineData(0, 192,
+        new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
+    [InlineData(0, 160,
+        new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
+    [InlineData(0, 128,
+        new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
+
+    public void BinaryStringToBytes_Works(BigInteger binary, int entropy, byte[] expected) =>
+        BinaryString.Create(binary, entropy).ToByteArray()
             .Should().BeEquivalentTo(expected);
 
     [Theory]
@@ -36,6 +45,6 @@ public class BinaryStringsTests
     [InlineData(8, Zeros256Minus8 + "00001000")]
     public void ToBinaryString_Works(BigInteger seed, string expected)
     {
-        BinaryString.Create(seed).ToString().Should().Be(expected);
+        BinaryString.Create(seed, 256).ToString().Should().Be(expected);
     }
 }

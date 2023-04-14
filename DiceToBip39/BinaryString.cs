@@ -10,12 +10,10 @@ public class BinaryString
 
     private BinaryString(string value) => _value = value;
 
-    private const int NoOfBits = 256;
-
-    public static BinaryString Create(BigInteger seed)
+    public static BinaryString Create(BigInteger seed, int entropyBits)
     {
         var ret = new StringBuilder();
-        for (int i = NoOfBits; i > 0; i--) {
+        for (int i = entropyBits; i > 0; i--) {
             ret.Insert(0, (seed % 2).ToString());
             seed /= 2;
         }
