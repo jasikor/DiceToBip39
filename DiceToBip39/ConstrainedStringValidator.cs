@@ -22,12 +22,12 @@ public static class StringFactoryExt
 
     public static Fin<string> AtLeastLong(this string s, int length) =>
         s.Validate(s => s.Length >= length,
-            $"String must be at least {length} characters long");
+            $"Parameter is just {s.Length} characters long, but should be at least {length}");
 
     public static Fin<string> ContainsOnly(this string s, char first, char last) =>
         s.Validate(s =>
                 s.All(c => c >= first && c <= last),
-            $"String has to be composed of [{first}..{last}] only");
+            $"Parameter has to be composed of [{first}..{last}] only");
 
     public static Fin<string> IsNotNull(this string s) =>
         s.Validate(s => !s.IsNull(), new ArgumentNullException());

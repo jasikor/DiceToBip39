@@ -31,7 +31,7 @@ namespace DiceToBip39
             args.Length == 1
                 ? FinSucc(args[0])
                 : FinFail<string>(
-                    $"Usage: DiceToBip39 diceSeed \n\n   diceSeed is a string of at least 100 digits of [1..6]");
+                    $"Usage: DiceToBip39 throws \n\n   throws is a string of 50+ digits of [1..6]. You get the best results (24 words) with 100 throws");
 
 
         public static Mnemonic ToMnemonic(DiceString diceSeed)
