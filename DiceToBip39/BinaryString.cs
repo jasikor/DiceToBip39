@@ -4,24 +4,31 @@ using System.Text;
 
 namespace DiceToBip39;
 
+public enum Entropies
+{
+    Bit128 = 128,
+    Bit160 = 160,
+    Bit224 = 224,
+    Bit192 = 192,
+    Bit256 = 256
+}
+
 public class BinaryString
 {
     private readonly string _value;
 
     private BinaryString(string value) => _value = value;
 
-    public static BinaryString Create(BigInteger seed, int entropyBits)
+    public static BinaryString Create(BigInteger seed, Entropies entropyBits)
     {
         var ret = new StringBuilder();
-        for (int i = entropyBits; i > 0; i--) {
+        for (int i = (int)entropyBits; i > 0; i--) {
             ret.Insert(0, (seed % 2).ToString());
             seed /= 2;
         }
 
         return new BinaryString(ret.ToString());
     }
-
-    static readonly int[] _goodEntropies = new[] {128, 160, 192, 224, 256};
 
     public byte[] ToByteArray()
     {

@@ -15,26 +15,26 @@ public class BinaryStringsTests
     private const string Zeros256Minus8 = Zeros256Minus16 + "00000000";
 
     [Theory]
-    [InlineData(0, 256,
+    [InlineData(0, Entropies.Bit256,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
-    [InlineData(1, 256,
+    [InlineData(1, Entropies.Bit256,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1})]
-    [InlineData(2, 256,
+    [InlineData(2, Entropies.Bit256,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2})]
-    [InlineData(512, 256,
+    [InlineData(512, Entropies.Bit256,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0})]
-    [InlineData(0b1111_1111_1111,  256,
+    [InlineData(0b1111_1111_1111,  Entropies.Bit256,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 255})]
-    [InlineData(0, 224,
+    [InlineData(0, Entropies.Bit224,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
-    [InlineData(0, 192,
+    [InlineData(0, Entropies.Bit192,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
-    [InlineData(0, 160,
+    [InlineData(0, Entropies.Bit160,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
-    [InlineData(0, 128,
+    [InlineData(0, Entropies.Bit128,
         new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})]
 
-    public void BinaryStringToBytes_Works(BigInteger binary, int entropy, byte[] expected) =>
+    public void BinaryStringToBytes_Works(BigInteger binary, Entropies entropy, byte[] expected) =>
         BinaryString.Create(binary, entropy).ToByteArray()
             .Should().BeEquivalentTo(expected);
 
@@ -45,6 +45,6 @@ public class BinaryStringsTests
     [InlineData(8, Zeros256Minus8 + "00001000")]
     public void ToBinaryString_Works(BigInteger seed, string expected)
     {
-        BinaryString.Create(seed, 256).ToString().Should().Be(expected);
+        BinaryString.Create(seed, Entropies.Bit256).ToString().Should().Be(expected);
     }
 }
