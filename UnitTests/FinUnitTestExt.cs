@@ -14,11 +14,11 @@ public static class FinUnitTestExt
         => @this.Match(ThrowIfSuccess, failValidation ?? Noop);
 
 
-    internal static void Noop<T>(T _) { }
+    private static void Noop<T>(T _) { }
 
-    internal static void ThrowIfFail<T>(T _)
+    private static void ThrowIfFail<T>(T _)
         => throw new Exception("Expected Success, got Fail instead.");
 
-    internal static void ThrowIfSuccess<T>(T _)
+    private static void ThrowIfSuccess<T>(T _)
         => throw new Exception("Expected Fail, got Success instead.");
 }
