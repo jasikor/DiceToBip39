@@ -1,6 +1,8 @@
 ﻿using System.Numerics;
 using LanguageExt;
 using LanguageExt.Common;
+using static DiceToBip39.EntropyExt;
+
 
 
 namespace DiceToBip39;
@@ -35,5 +37,7 @@ public class DiceString
 
 
     public int BitsOfEntropy() =>
-        (int) Math.Log(Math.Pow(6.0, _value.Length), 2.0);
+        (int) EntropyExt.BitsOfEntropy(_value.Length, 6);
+
+    public Entropies Entropy() => Floor(BitsOfEntropy());
 }

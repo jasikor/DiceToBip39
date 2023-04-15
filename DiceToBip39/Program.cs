@@ -37,7 +37,7 @@ namespace DiceToBip39
         public static Mnemonic ToMnemonic(DiceString diceSeed)
         {
             var bi = diceSeed.ToBigInteger();
-            var by = BinaryString.Create(bi, Entropies.Bit256).ToByteArray();
+            var by = BinaryString.Create(bi, diceSeed.Entropy()).ToByteArray();
             return new Mnemonic(Wordlist.English, by);
         }
     }

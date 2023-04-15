@@ -4,14 +4,7 @@ using System.Text;
 
 namespace DiceToBip39;
 
-public enum Entropies
-{
-    Bit128 = 128,
-    Bit160 = 160,
-    Bit224 = 224,
-    Bit192 = 192,
-    Bit256 = 256
-}
+
 
 public class BinaryString
 {
