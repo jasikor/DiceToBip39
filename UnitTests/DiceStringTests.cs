@@ -32,17 +32,18 @@ public class DiceStringTests
             .ShouldBeFail();
 
     [Theory]
-    [InlineData(50, 129)]
-    [InlineData(55, 129)]
-    [InlineData(62, 160)]
-    [InlineData(69, 160)]
-    [InlineData(75, 193)]
-    [InlineData(80, 193)]
-    [InlineData(87, 224)]
-    [InlineData(100, 258)]
-    [InlineData(110, 258)]
-    public void Entropy_Calculates_Correctly(int diceLength, int expected) =>
+    [InlineData(50, Entropies.Bit128)]
+    [InlineData(55, Entropies.Bit128)]
+    [InlineData(62, Entropies.Bit160)]
+    [InlineData(69, Entropies.Bit160)]
+    [InlineData(75, Entropies.Bit192)]
+    [InlineData(80, Entropies.Bit192)]
+    [InlineData(87, Entropies.Bit224)]
+    [InlineData(89, Entropies.Bit224)]
+    [InlineData(100, Entropies.Bit256)]
+    [InlineData(110, Entropies.Bit256)]
+    public void CreatingDiceString_TrimsLength_Correctly(int diceLength, Entropies expected) =>
         DiceString.Create(new string('1', diceLength))
-            .ShouldBeSuccess(ds => ds.BitsOfEntropy().Should().Be(expected));
+            .ShouldBeSuccess(ds => ds.Entropy().Should().Be(expected));
     
 }
