@@ -1,7 +1,6 @@
 ﻿using System.Numerics;
 using DiceToBip39;
 using FluentAssertions;
-using LanguageExt.UnitTesting;
 
 
 namespace UnitTests;
@@ -45,5 +44,4 @@ public class DiceStringTests
     public void CreatingDiceString_TrimsLength_Correctly(int diceLength, Entropies expected) =>
         DiceString.Create(new string('1', diceLength))
             .ShouldBeSuccess(ds => ds.Entropy().Should().Be(expected));
-    
 }

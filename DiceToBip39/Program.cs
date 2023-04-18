@@ -1,6 +1,4 @@
-﻿using System;
-using LanguageExt;
-using LanguageExt.Common;
+﻿using LanguageExt;
 using static LanguageExt.Prelude;
 using NBitcoin;
 using static DiceToBip39.ProgramExt;

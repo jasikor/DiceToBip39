@@ -13,7 +13,7 @@ public static class ConstrainedStringValidator
             .Bind(s => s.ContainsOnly(first, last));
 }
 
-public static class StringFactoryExt
+public static class ConstrainedStringValidatorExt
 {
     private static Fin<string> Validate(this string s, Func<string, bool> validator, Error e) =>
         validator(s)

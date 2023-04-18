@@ -1,6 +1,5 @@
 ﻿using DiceToBip39;
 using FluentAssertions;
-using LanguageExt.UnitTesting;
 using static DiceToBip39.EntropyExt;
 
 namespace UnitTests;

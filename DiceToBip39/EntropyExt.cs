@@ -1,6 +1,4 @@
-﻿using LanguageExt;
-
-namespace DiceToBip39;
+﻿namespace DiceToBip39;
 
 public enum Entropies
 {

@@ -1,5 +1,4 @@
 using DiceToBip39;
-using LanguageExt.UnitTesting;
 
 namespace UnitTests
 {
