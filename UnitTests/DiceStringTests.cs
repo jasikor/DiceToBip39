@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using DiceToBip39;
 using FluentAssertions;
+using LanguageExt.UnitTesting;
 
 
 namespace UnitTests;

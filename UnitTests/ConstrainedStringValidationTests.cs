@@ -1,4 +1,6 @@
 ﻿using static DiceToBip39.ConstrainedStringValidator;
+using LanguageExt.UnitTesting;
+
 
 namespace UnitTests;
 
